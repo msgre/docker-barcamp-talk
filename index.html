@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+        <title>Docker &mdash; Barcamp Vsetín ve Zlíně 2015</title>
+
+        <meta name="description" content="Přednáška o Dockeru pro Vsetínský Barcamp ve Zlíně ze 14.února 2015">
+        <meta name="author" content="Michal Valoušek (michal@plovarna.cz)">
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+        <script src="//use.typekit.net/hvj6llf.js"></script>
+        <script>try{Typekit.load();}catch(e){}</script>
+
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/simple.css" id="theme">
+
+        <!-- Code syntax highlighting -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+        <style>
+            .reveal section img {
+                border: none;
+                box-shadow: none;
+                background: none;
+            }
+            .reveal section.chapter * {
+                color: #fff;
+            }
+            .reveal section.chapter2 * {
+                color: #000;
+            }
+            .reveal section img.dimmed {
+                -webkit-filter: grayscale(100%);
+                filter: grayscale(100%);
+                opacity: .3;
+            }
+            .reveal .contentsource {
+                font-size:60%;
+            }
+            .reveal .contentsource,
+            .reveal .contentsource a {
+                text-align:right;
+                color:#59c6c6;
+            }
+            .reveal table.bigger tr td {
+                font-size:120%;
+            }
+            .reveal .bigger {
+                font-size:120%;
+            }
+            .orangel {
+                color:#59c6c6;
+            }
+            .reveal a, .reveal a:active, .reveal a:visited {
+                color:#ffaa4d;
+            }
+            .reveal section.bgwhite {
+                background:#ffffff;
+            }
+            .reveal section.bgwhite *{
+                padding-left:2em;
+                padding-right:2em;
+            }
+            .reveal section.code * {
+                text-align:left;
+            }
+            .reveal section.code p.code {
+                background:#313B3F;
+                padding:.4em .8em;
+            }
+            .reveal section.code code {
+                font-size:80%;
+                font-family: monospace;
+            }
+            .reveal a:hover img {
+                border-color:none;
+                box-shadow:none;
+                opacity:1;
+                background:none;
+            }
+            .reveal a.megastin {
+                color:#fff;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, .1),
+                             2px 2px 2px rgba(0, 0, 0, .1),
+                             3px 3px 2px rgba(0, 0, 0, .1),
+                             4px 4px 2px rgba(0, 0, 0, .1),
+                             5px 5px 2px rgba(0, 0, 0, .1),
+                             6px 6px 2px rgba(0, 0, 0, .1),
+
+                             1px -1px 2px rgba(0, 0, 0, .1),
+                             2px -2px 2px rgba(0, 0, 0, .1),
+                             3px -3px 2px rgba(0, 0, 0, .1),
+                             4px -4px 2px rgba(0, 0, 0, .1),
+                             5px -5px 2px rgba(0, 0, 0, .1),
+                             6px -6px 2px rgba(0, 0, 0, .1),
+
+                             -1px 1px 2px rgba(0, 0, 0, .1),
+                             -2px 2px 2px rgba(0, 0, 0, .1),
+                             -3px 3px 2px rgba(0, 0, 0, .1),
+                             -4px 4px 2px rgba(0, 0, 0, .1),
+                             -5px 5px 2px rgba(0, 0, 0, .1),
+                             -6px 6px 2px rgba(0, 0, 0, .1),
+
+                             -1px -1px 2px rgba(0, 0, 0, .1),
+                             -2px -2px 2px rgba(0, 0, 0, .1),
+                             -3px -3px 2px rgba(0, 0, 0, .1),
+                             -4px -4px 2px rgba(0, 0, 0, .1),
+                             -5px -5px 2px rgba(0, 0, 0, .1),
+                             -6px -6px 2px rgba(0, 0, 0, .1);
+            }
+            .reveal section.chapter table tbody tr th,
+            .reveal section.chapter table tbody tr td {
+                border-color:#ffaa4d;
+            }
+        </style>
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+
+        <!--[if lt IE 9]>
+        <script src="lib/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+<!-- uvod -->
+                <section data-background="#59c6c6" class="chapter">
+                    <img src="imgs/docker-bw-logo.png" width="50%" />
+                    <h2>Docker</h2>
+                    <p>Barcamp Vsetín ve Zlíně 2015</p>
+                    <p><small>Michal Valoušek &bullet; @msgre &bullet; michal@plovarna.cz</small></p>
+                </section>
+
+                <section data-background="#ff7617" class="chapter">
+                    <a href="https://www.energomonitor.cz/"><img src="imgs/em-logo.png" width="70%" /></a>
+                </section>
+
+                <section>
+                    <section data-background="imgs/wired.jpg">
+                        <h3><a class="megastin" href="http://www.wired.com/2013/09/docker/all/">The Man Who Would Build a Computer the Size of the Entire Internet</a></h3>
+                    </section>
+
+                    <section>
+                        <q>
+                            &bdquo;Docker je open-source projekt, jehož cílem je
+                            poskytnout jednotné rozhraní pro izolaci aplikací do
+                            kontejnerů v prostředí Linuxových operačních
+                            systémů&ldquo;
+                        </q>
+                        <p class="contentsource"><a href="http://cs.wikipedia.org/wiki/Docker_(software)">http://cs.wikipedia.org/wiki/Docker_(software)</a></p>
+                    </section>
+
+                    <section>
+                        <q>
+                            &bdquo;Docker is an open-source project that
+                            automates the deployment of applications inside
+                            software containers, by providing an additional
+                            layer of abstraction and automation of
+                            operating-system-level virtualization on Linux.
+                            Docker uses resource isolation features of the
+                            Linux kernel such as cgroups and kernel namespaces
+                            to allow independent "containers" to run within a
+                            single Linux instance, avoiding the overhead of
+                            starting virtual machines.
+                            &ldquo;
+                        </q>
+                        <p class="contentsource"><a href="http://en.wikipedia.org/wiki/Docker_(software)">http://en.wikipedia.org/wiki/Docker_(software)</a></p>
+                    </section>
+                </section>
+
+                <section>
+                    <table>
+                        <tr>
+                            <td><img src="imgs/vb.png" height="40%" /></td>
+                            <td>  </td>
+                            <td><img src="imgs/vagrant.png" height="15%" /></td>
+                            <td>  </td>
+                            <td><img src="imgs/git.png" height="36%" /></td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section data-background="#59c6c6" class="chapter">
+                    <h3>Docker != Virtual Machines</h3>
+                </section>
+
+                <section>
+                    <img src="imgs/docker_vm.png" width="100%" />
+                </section>
+
+                <section data-background="#ff7617" class="chapter">
+                    <!--<h3>Za všechno může čas, <small style="opacity:.6; line-height:230%">čas, <small style="opacity:.6; line-height:400%">čas, <small style="opacity:.6; line-height:690%">čas…</small></small></small></h3>-->
+                    <p>&nbsp;</p>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th></th>
+                                <th>Start</th>
+                                <th>Stop</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th >Docker kontejner</th>
+                                <td >&lt; 50ms</td>
+                                <td >&lt; 50ms</td>
+                                <td >❣❣❣</td>
+                            </tr>
+                            <tr>
+                                <th>Virtual Machine</th>
+                                <td>&lt; 30-45s</td>
+                                <td>&lt; 5-10s</td>
+                                <td></td>
+                            </tr>
+                            <tr></tr>
+                        </tbody>
+                    </table>
+                    <p class="contentsource"><br><a href="http://www.slideshare.net/Flux7Labs/performance-of-docker-vs-vms">Performance of Docker vs VMs</a></p>
+                </section>
+
+                <section>
+                    <section data-background="imgs/performance.png" class="bgwhite">
+                        <h2>Výkon</h2>
+                        <p>
+                            <a href="http://domino.research.ibm.com/library/cyberdig.nsf/papers/0929052195DD819C85257D2300681E7B/$File/rc25482.pdf">IBM Research Report</a><br/>
+                            An Updated Performance Comparison of Virtual Machines and Linux Containers
+                        </p>
+                    </section>
+                    <section>
+                        <img src="imgs/perf1.png" width="70%"/>
+                    </section>
+                    <section>
+                        <img src="imgs/perf2.png" width="70%"/>
+                    </section>
+                    <section>
+                        <img src="imgs/perf3.png" width="70%"/>
+                    </section>
+                </section>
+
+                <section data-background="#ff7617" class="chapter">
+                    <h2>Containerization is the new virtualization</h2>
+                </section>
+
+<!-- nazvoslovi -->
+                <section data-background="#59c6c6" class="chapter">
+                    <h2>Názvosloví</h2>
+                </section>
+
+                <section>
+                    <table class="bigger">
+                        <tr>
+                            <td><a href="https://registry.hub.docker.com">Registry</a></td>
+                            <td class="orangel"> &bullet; </td>
+                            <td>Image</td>
+                            <td class="orangel"> &bullet; </td>
+                            <td>Container</td>
+                        </tr>
+                    </table>
+                </section>
+                <section>
+                    <img src="imgs/docker_functions.png" width="100%" />
+                </section>
+
+<!-- Demo -->
+                <section data-background="#59c6c6" class="chapter">
+                    <h2>Demo</h2>
+                </section>
+
+                <section data-background="#4a555a" class="chapter code">
+                    <p>Spuštění BASHe</p>
+                    <p class="code"><code>sudo docker run -ti ubuntu /bin/bash</code></p>
+
+                    <p>Spuštění Redise</p>
+                    <p class="code" style="font-size:80%">
+                        <code>
+                            sudo docker run --name some-redis --rm redis<br>
+                            sudo docker run -it --rm --link some-redis:redis redis \<br>
+                            &nbsp;&nbsp;sh -c 'exec redis-cli \<br>
+                            &nbsp;&nbsp;-h "$REDIS_PORT_6379_TCP_ADDR" \<br>
+                            &nbsp;&nbsp;-p "$REDIS_PORT_6379_TCP_PORT"'
+                        </code>
+                    </p>
+                </section>
+
+<!-- Demo -->
+                <section data-background="#59c6c6" class="chapter">
+                    <h2>Layers</h2>
+                </section>
+
+                <section>
+                    <img src="imgs/docker-filesystems-multilayer.png" width="80%" />
+                </section>
+                <section data-background="#4a555a" class="chapter code">
+                    <h3>Dockerfile</h3>
+                    <p class="code">
+                        <code>
+                        FROM ubuntu<br/>
+                        MAINTAINER Luděk Munzar<br/>
+                        RUN apt-get update<br/>
+                        RUN apt-get install -y memcached<br/>
+                        EXPOSE 11211<br/>
+                        CMD ["-m", "128"]<br/>
+                        USER daemon<br/>
+                        ENTRYPOINT memcached<br/>
+                        </code>
+                    </p>
+                    <p class="contentsource"><a href="https://www.digitalocean.com/community/tutorials/docker-explained-how-to-create-docker-containers-running-memcached">Docker Explained: How To Create Docker Containers Running Memcached</a></p>
+                </section>
+
+                <section data-background="#4a555a" class="chapter code">
+                    <p class="code" style="text-align:center; padding-top:3em;padding-bottom:3em">
+                        <code>sudo docker build -t memcached_img .</code>
+                    </p>
+                </section>
+
+<!-- izolace -->
+                <section data-background="imgs/izolace.jpg" class="chapter2">
+                    <h2>Izolace</h2>
+                </section>
+
+                <section>
+                    <section>
+                        <ol class="bigger">
+                            <li>Porty</li>
+                            <li>Sdílení dat</li>
+                            <li>Prolinkovávání</li>
+                        </ol>
+                    </section>
+
+                    <section data-background="#4a555a" class="chapter code">
+                        <h2>Porty</h2>
+                        <p>V Dockerfile</p>
+                        <p class="code">
+                            <code>
+                                ...<br/>
+                                EXPOSE 11211
+                            </code>
+                        </p>
+                        <p>Parametrem v CLI</p>
+                        <p class="code">
+                            <code>
+                                sudo docker run -P memcached_img<br/>
+                                sudo docker run -p 45001:11211 memcached_img
+                            </code>
+                        </p>
+                    </section>
+
+                    <section data-background="#4a555a" class="chapter code">
+                        <h2>Sdílení dat (data volumes)</h2>
+                        <p>V Dockerfile</p>
+                        <p class="code">
+                            <code>
+                                ...<br/>
+                                VOLUME ["/data"]
+                            </code>
+                        </p>
+                        <p>Parametrem v CLI</p>
+                        <p class="code" style="font-size:90%">
+                            <code>
+                                sudo docker run -v /data ubuntu<br/>
+                                sudo docker run -v /hostdata:/data ubuntu<br/>
+                                sudo docker run -v ~/.bash_history:/.bash_history ubuntu
+                            </code>
+                        </p>
+                    </section>
+
+                    <section data-background="#4a555a" class="chapter code">
+                        <h2>Sdílení dat<br>(data volume container)</h2>
+                        <p>Spuštění datového kontejneru</p>
+                        <p class="code">
+                            <code>
+                                sudo docker run --name datos -v /data ubuntu<br/>
+                            </code>
+                        </p>
+                        <p>Sdílení dat</p>
+                        <p class="code">
+                            <code>
+                                sudo docker run --volumes-from datos ubuntu
+                            </code>
+                        </p>
+                    </section>
+
+                    <section data-background="#4a555a" class="chapter code">
+                        <h2>Prolinkovávání</h2>
+                        <p>Spuštění pojmenovaného kontejneru</p>
+                        <p class="code">
+                            <code>
+                                sudo docker run --name db training/postgres
+                            </code>
+                        </p>
+                        <p>Prolinkování kontejnerů</p>
+                        <p class="code">
+                            <code>
+                                sudo docker run --link db:db training/webapp
+                            </code>
+                        </p>
+                    </section>
+
+                </section>
+
+<!-- usecases -->
+                <section data-background="#59c6c6" class="chapter">
+                    <h2>Příklady užití</h2>
+                </section>
+
+                <section>
+                    <q>Docker is the .exe for the other software.</q>
+                    <p class="contentsource"><a href="https://twitter.com/almadcz/status/559420567414378498">Almad</a></p>
+                </section>
+
+                <section>
+                    <section>
+                        <h3>Webové aplikace</h3>
+                        <p>&nbsp;</p>
+                        <p>Rozbití na atomy, microservices, heterogenní prostředí, problémy v multihost prostředí</p>
+                    </section>
+                    <section>
+                        <h3>Frontend vývoj</h3>
+                        <p>&nbsp;</p>
+                        <p>Kontejner s backend aplikací, nasdílení frontend aplikace dovnitř</p>
+                    </section>
+                    <section>
+                        <h3>CLI utility</h3>
+                        <p>&nbsp;</p>
+                        <p>Grunt, Transifex, generování screenshotů</p>
+                    </section>
+                    <section>
+                        <h3>GUI aplikace v Linuxu</h3>
+                        <p>&nbsp;</p>
+                        <p><a href="http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/">IDE</a>, Skype, Firefox</p>
+                        <p><em>Inception!</em></p>
+                    </section>
+                </section>
+
+                <section>
+                    <h3>Dokumentace</h3>
+                    <p>
+                        <a href="https://docs.docker.com/reference/commandline/cli/">Oficiální Docker dokumentace</a>,
+                        Digital Ocean: <a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-getting-started">I.</a>, <a href="https://www.digitalocean.com/community/tutorials/docker-explained-how-to-create-docker-containers-running-memcached">II.</a>
+                    </p>
+                    <p>&nbsp;</p>
+                    <h3>Newslettery</h3>
+                    <p><a href="https://www.docker.com/subscribe_newsletter/">Docker Newsletter</a>, <a href="http://www.centurylinklabs.com/">CenturyLink</a></p>
+                </section>
+
+                <section data-background="#ff7617" class="chapter">
+                    <p><br/><br/><br/><p>
+                    <h2>Díky za pozornost</h2>
+                    <p><br/><br/><br/><p>
+                    <p><small>Michal Valoušek &bullet; @msgre &bullet; michal@plovarna.cz</small></p>
+                </section>
+            </div>
+        </div>
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
+
+        <script>
+
+            // Full list of configuration options available at:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: true,
+                progress: false,
+                history: true,
+                center: true,
+
+                transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+                // Optional reveal.js plugins
+                dependencies: [
+                    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: 'plugin/zoom-js/zoom.js', async: true },
+                    { src: 'plugin/notes/notes.js', async: true }
+                ]
+            });
+
+        </script>
+
+    </body>
+</html>
